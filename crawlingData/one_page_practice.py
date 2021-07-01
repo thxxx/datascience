@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import re
 
 one_category_url = "https://play.google.com/store/apps/collection/cluster?clp=ogooCAEaHAoWcmVjc190b3BpY19jZ1lCeGhIdmk2cxA7GAMqAggBUgIIAg%3D%3D:S:ANO1ljJyQ-M&gsr=CiuiCigIARocChZyZWNzX3RvcGljX2NnWUJ4aEh2aTZzEDsYAyoCCAFSAggC:S:ANO1ljJ4RbA"
 
@@ -12,12 +13,12 @@ another_a = oc_soup.find_all("a", {"class": "poRVub"})
 
 # for one_app in another_a:
 #     one_link = one_app["href"]
-#     one_url = "https://play.google.com" + one_link
 
 
 for one_app in range(4):
     print(f"{one_app} number is progressing..")
     one_link = another_a[one_app]["href"]
+    # 여기까지가 체인지
     one_url = "https://play.google.com" + one_link
 
     oa_request = requests.get(one_url)
@@ -40,3 +41,5 @@ for one_app in range(4):
         "span", {"class": "htlgb"}).get_text())
     print(oa_infos_title[2].get_text(), oa_infos[2].find(
         "span", {"class": "htlgb"}).get_text())
+
+    print("")

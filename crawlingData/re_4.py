@@ -1,3 +1,5 @@
+from bs4 import BeautifulSoup
+import requests
 import re
 
 p = re.compile("ca.e")  # . 은 하나의 문자를 의미
