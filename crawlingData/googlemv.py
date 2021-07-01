@@ -7,17 +7,43 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import collections
 
-browser = webdriver.Chrome("./chromedriver")
-browser.maximize_window()
+# browser = webdriver.Chrome("./chromedriver")
+# browser.maximize_window()
 
 
-URL = "https://play.google.com/store/movies/top"
-browser.get(URL)
-
+URL = ["https://play.google.com/store/apps/details?id=com.intsig.camscanner",
+       "https://play.google.com/store/apps/details?id=com.twitter.android",
+       "https://play.google.com/store/apps/details?id=mydiary.journal.diary.diarywithlock.diaryjournal.secretdiary",
+       "https://play.google.com/store/apps/details?id=com.ss.android.ugc.trill",
+       "https://play.google.com/store/apps/details?id=com.komorebi.SimpleCalendar"]
+# browser.get(URL)
+sd = "DWdw"
 headers = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36",
     "Accept-Language": "ko-KR,ko"}
+
+for i in range(5):
+    result = requests.get(URL[i], headers=headers)
+    result.raise_for_status()
+
+    # soup = BeautifulSoup(browser.page_source, "lxml")
+    soup = BeautifulSoup(result.text, "lxml")
+
+    content = soup.find("div", {"jsname": "sngebd"})
+    c = content.get_text()
+    a = c.split(" ")
+    counts = collections.Counter(a)
+    if counts['수']:
+        counts.pop('수')
+    if counts['']:
+        counts.pop('')
+    if counts['할']:
+        counts.pop('할')
+    print(counts.most_common(10))
+
+"""
 
 # 지정한 위치로 스크롤 내리기
 browser.execute_script("window.scrollTo(0,5080)")  # 세로 길이만큼 내린다.
@@ -53,3 +79,4 @@ print(len(movies))
 for mv in movies:
     title = mv.find("div", {"class": "WsMG1c nnK0zc"}).get_text()
     print(title)
+"""
